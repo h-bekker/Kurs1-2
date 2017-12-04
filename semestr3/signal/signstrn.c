@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+
+volatile int flag=0;
+
+void sigint_handler(int signo) {
+	flag=1;
+	}
+
+int main(int argc, char** argv) {
+	signal(SIGINT,sigint_handler);
+	int pos=0,n=10,k=0,m=0,p=0,i;
+	char* str;
+	char c;
+	if (!(str=(char*) calloc(n,sizeof(char)))) {
+		printf("Error, memory no access\n");
+		exit(1);
+		}
+	if (argc<3) {
+		printf("Error, few arguments\n");
+		exit(1);
+		}
+	k=strlen(argv[2]);
+	while (m<k) {
+		p=p*10+argv[2][m]-'0';
+		m++;
+		}	
+	FILE* f;
+	if ((f=fopen(argv[1],"r"))!=NULL) {
+		while (!feof(f))
+			if (flag)
+				for (i=0; i<p; i++) {
+					pos=0;
+					while ((fscanf(f,"%c",&c)==1) && (c!='\n')) {
+						if (pos==n) {
+							n+=10;
+							if (!(str=(char*) realloc(str,n*sizeof(char)))) {
+								printf("Error\n");
+								return 0;
+								}
+							}
+						str[pos]=c;
+						pos++;
+						}
+					str[pos]='\0';
+					flag=0;				
+					printf("%s\n",str);				
+					}	
+		fclose(f);
+		}
+	else
+		printf("Error, wrong file in param\n");
+	return 0;
+	}

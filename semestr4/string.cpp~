@@ -1,0 +1,124 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class strings {
+public:
+		char* s;
+		int size;
+	
+		friend istream & operator >>(istream &, strings &);
+		friend ostream & operator <<(ostream &, const strings &);
+		friend strings operator+(const strings &,const strings &);
+		friend int operator-(const strings &,const strings &);
+		friend strings operator*(const strings &,int);
+		friend strings operator++(const strings &);
+		friend strings operator!(const strings &);
+		strings & operator=(const strings &a) {delete [] s; size=a.size; s=new char[size]; s=strncpy(s,a.s,size); s[size-1]='\0'; return *this; }
+		strings() {s=NULL; size=0; }
+		strings(const char *str) {size=strlen(str)+1; s=new char[size]; s=strncpy(s,str,size); s[size-1]='\0'; }
+		strings(const strings &a) {size=a.size; cout << size << endl; s=new char[size]; s=strncpy(s,a.s,size); s[size-1]='\0'; }
+		~strings() {delete [ ] s; };
+	};
+
+istream & operator >>(istream & st, strings & str) {
+	char* temp;
+	temp=new char[256];
+	st >> temp;
+	str.size=strlen(temp)+1;
+	str.s=new char[str.size];
+	str.s=strncpy(str.s,temp,str.size);
+	str.s[str.size-1]='\0';
+	delete [] temp;
+	return st;
+	}
+
+ostream & operator <<(ostream & st, const strings & str) {
+	st << str.s << endl;
+	return st;
+	}
+
+strings operator+(const strings &a,const strings &b) {
+	strings c;
+	c.size=a.size+b.size-1;
+	c.s=new char[c.size];
+	c.s=strncpy(c.s,a.s,a.size-1);
+	int k=0;
+	for (int i=a.size-1; i<c.size; i++) {
+		c.s[i]=b.s[k];
+		k++;
+		}
+	return c;
+	}
+
+int operator-(const strings &a,const strings &b) {
+	if (a.size<b.size) //если вторая строка длиннее первой
+		return -1;
+	int k=strlen(b.s);
+	bool flag;
+	for (unsigned int i=0; i<=strlen(a.s)-k; i++) {
+		flag=true;
+		for (int j=0; j<k; j++) // подстрока, начинаяющаяся с i-ой позиции 
+			if (b.s[j]!=a.s[i+j]) {
+				flag=false;
+				break;
+				}
+		if (flag)
+			return i;
+		}
+	return -1;
+	}	
+
+strings operator*(const strings &a,int k) {
+	strings c;
+	c.size=strlen(a.s)*k+1;
+	c.s=new char[c.size];
+	unsigned int p=0;
+	for (int i=0; i<c.size-1; i++) {
+		c.s[i]=a.s[p];
+		p++;
+		if (p==strlen(a.s))
+			p=0;
+		}
+	c.s[c.size-1]='\0';
+	return c;
+	}
+
+strings operator++(const strings &a) {
+	strings c;
+	c.size=a.size+1;
+	c.s=new char[c.size];
+	c.s=strncpy(c.s,a.s,strlen(a.s));
+	c.s[a.size-1]=c.s[a.size-2];
+	c.s[a.size]='\0';
+	return c;
+	}
+
+strings operator!(const strings &a) {
+	strings c;
+	c.size=a.size;
+	c.s=new char[c.size];
+	for (int i=0; i<c.size-1; i++) 
+		c.s[i]=a.s[strlen(a.s)-i-1];
+	c.s[c.size-1]='\0';
+	return c;
+	}
+
+int main() {
+	strings a,b,c;
+	cin >> a;
+	cin >> b;
+	cout << a;
+	cout << b;
+	int k=3;
+	cout << a*k;
+	c=a+b;
+	cout << c;
+	c=!a;
+	cout << c;
+	k=a-b;
+	cout << a-b << endl;
+	++a;
+	cout << ++a;
+	return 0;
+	}

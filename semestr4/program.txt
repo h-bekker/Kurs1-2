@@ -1,0 +1,15 @@
+ program
+var a , b : int ,
+	c : char ,
+	s : string ;
+begin
+	read ( a ) ;
+	read ( c ) ;
+	read ( s ) ;
+	inc ( a ) ;
+	sqr ( a ) ;
+	write ( a ) ;
+	write ( c ) ;
+	writeline ( s ) ;
+	strsize ( s )  
+end @

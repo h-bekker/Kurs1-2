@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+	int key;
+	struct node* next;
+	};
+
+struct node* new(int n) {
+	struct node* p;
+	p=(struct node*) calloc (1,sizeof(*p));
+	p->key=n;
+	p->next=NULL;
+	return p;
+	}
+
+int searchkey(struct node* l, int n) {
+	struct node* p=l;
+	while (p!=NULL) {
+		if (p->key==n)
+			return 1;
+		p=p->next;
+		}
+	return 0;
+	}
+
+struct node* searchpos(struct node* l, int n) {
+	struct node* p=l;
+	if ((p==NULL) || (p->key>n))  
+		return NULL; 
+	struct node* q=p->next;
+	while (q!=NULL)
+		if (q->key<n) {
+			p=p->next;
+			q=q->next;
+			}
+		else
+			return p;
+	return p;
+	}
+
+struct node* insert(struct node* l, struct node* p, struct node* q) {
+	struct node* r=l;
+	struct node* t;
+	if (p==NULL) {
+		q->next=r;
+		r=q;
+		return r;
+		}
+	while (r!=p)
+		r=r->next;
+	t=r->next;
+	r->next=q;
+	q->next=t;
+	return l;
+	}
+
+struct node* pushfront(struct node* l, struct node* p) {
+	p->next=l;
+	l=p;
+	return l;
+	}
+
+struct node* pushback(struct node* l, struct node* p) {
+	struct node* q;
+	q=l;
+	if (q==NULL)
+		l=p;
+	else { 
+		while (q->next!=NULL) 
+			q=q->next;
+		q->next=p;
+		}
+	return l;
+	}
+
+struct node* pushsort(struct node* l, struct node* p) {
+	struct node* q;
+	q=searchpos(l,p->key);
+	l=insert(l,q,p);
+	return l;
+	}
+
+struct node* deletelast(struct node* l) {
+	struct node* p=l;
+	struct node* q=l->next;
+	if (l->next==NULL) {
+		free(l);		
+		return NULL;
+		}
+	while (q->next!=NULL) {
+		q=q->next;
+		p=p->next;
+		}
+	p->next=NULL;
+	free(q);
+	return l;
+	}	
+
+struct node* deletefirst(struct node* l) {
+	struct node* p=l;
+	l=l->next;
+	p->next=NULL;
+	free(p);
+	return l;
+	}	
+
+void printlist(struct node* l) {
+	struct node* p=l;
+	while (p!=NULL) {
+		printf("%d ",p->key);
+		p=p->next;
+		}
+	printf("\n");
+	}
+
+int main(void) {
+	struct node* list = NULL;
+	struct node* link = NULL;
+	int n;
+	while (scanf("%d",&n)==1) {
+		link=new(n);
+		list=pushsort(list,link);
+		}
+	printlist(list);
+	return 0;
+	}

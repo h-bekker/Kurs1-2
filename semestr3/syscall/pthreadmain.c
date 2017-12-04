@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <pthread.h>
+
+void* thread_func(void* arg) {
+	int i;
+	int loc_id = *(int*)arg;
+	for (i=0; i<4; i++) {
+		printf("Thread %i is running\n",loc_id);
+		sleep(1);
+		}
+	}
+
+int main(int argc, char* argv[]) {
+	int id1=1, id2, result;
+	pthread_t thread1, thread2;
+	result=pthread_create(&thread1, NULL, thread_func, &id1);
+	if (result!=0) {
+		perror("the first thread");
+		return 1;
+		}
+	id2=2;
+	result=pthread_create(&thread2, NULL, thread_func, &id2);
+	result=pthread_join(thread1,NULL);
+	result=pthread_join(thread2,NULL);
+	return 0;
+	}

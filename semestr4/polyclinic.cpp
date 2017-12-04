@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+struct Mode {
+	int StartTime;
+	int StartMin;
+	int EndTime;
+	int EndMin;
+	bool Free;
+	};
+
+struct Worker {
+	char* Name;
+	Mode* Table;
+	};
+
+struct Course {
+	char* Name;
+	Worker* Man;
+	};
+
+struct Polyclinic {
+	char* Name;
+	Course* Field;
+	};
+
+Polyclinic* Clinic;
+
+void create() {
+	Polyclinic P;
+	//из файла считывается Название поликлиники, направления и работники. Скорее всего после имени работника идет его направление, и каждый раз пробегать по списку направлении, тем самым, при нужде, запихивать в список новое направление. 

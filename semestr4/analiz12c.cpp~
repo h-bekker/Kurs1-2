@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+
+char c;
+
+void gc(){cin>>c;}
+
+bool scan_G ( ) {
+	enum state { H, AB, AC, C, S, ER };
+	state CS; // CS - текущее состояние
+	CS = S;
+	do { gc ();
+		switch (CS) {
+			case H:
+				if (c == '1') { CS = C; }
+				else if (c == '0') { CS = AB; }
+					else CS = ER;
+				break;
+			case C:
+				if (c == '0') { CS = AB; }
+				else if (c == '@') { CS = S; }
+					else CS = ER;
+				break;
+			case AB:
+				if (c == '1') { CS = AC; }
+				else CS = ER;
+				break;
+			case AC:
+				if (c == '0') { CS = AB; }
+				else if (c == '@') { CS = S; }
+					else if (c != '1') { CS = ER; }
+				break;
+		}
+	} while (CS != S && CS != ER);
+	if (CS == ER)
+		return false;
+	else
+		return true;
+	}
+
+int main() {
+	cout << scan_G() << endl;
+	}

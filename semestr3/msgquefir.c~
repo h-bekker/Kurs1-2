@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct {
+	unsigned long mtype;
+	char* data;
+	} message ;
+	
+char* getlines(void) {
+	char* str;
+	char c;
+	int n=10, pos=0;
+	if (!(str=(char*) calloc (n,sizeof(char)))) {
+		printf("Error\n");		
+		return 0; 
+		}
+	while ((scanf("%c",&c)==1) && (c!='\n')) {
+		if (pos==n) {
+			n+=10;
+			if (!(str=(char*) realloc(str,n*sizeof(char)))) {
+				printf("Error\n");
+				return 0;
+				}
+			}
+		str[pos]=c;
+		pos++;
+		}
+	return str;
+	}
+
+int main() {
+	key_t key;
+	int msgid, n=256;
+	char* str=NULL;
+	//if (key=ftok("/bin/kill",44)==-1) {
+		//perror("ftok");
+		//exit(1);
+		//}
+	key=ftok("/bin/kill",56);
+	printf("%d\n",key);
+	msgid=msgget(key,0666|IPC_CREAT|IPC_EXCL);
+	if (!(message.data=(char*) calloc (n,sizeof(char)))) {
+		printf("Error\n");		
+		return 0; 
+		}
+	while(1) {
+		str=getlines();
+		strcpy(message.data,str);
+		switch (str[0]) {
+			case 'a': case 'A' :
+				message.mtype=1;
+				msgsnd(msgid, (struct msgbuf*) (& message), strlen(str)+1,0);
+				break;
+			case 'b': case 'B' :
+				message.mtype=2;
+				msgsnd(msgid, (struct msgbuf*) (& message), strlen(str)+1,0);
+				break;
+			case 'q': case 'Q' :
+				message.mtype=1;
+				msgsnd(msgid, (struct msgbuf*) (& message), strlen(str)+1,0);
+				message.mtype=2;
+				msgsnd(msgid, (struct msgbuf*) (& message), strlen(str)+1,0);
+				sleep(7);
+				msgctl(msgid, IPC_RMID, NULL);
+				exit(0);
+			default:
+				break;
+			}
+		}
+	}

@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+class warrior
+{
+	public string Name {get; set; }
+	public int HP {get; set; }
+	public warrior(string name, int hp)
+	{
+		Name=name;
+		HP=hp;
+	}
+	public virtual int GetDamage(int Damage) {return 0;}
+}
+
+class warrior_in_light_armor : warrior
+{
+	public warrior_in_light_armor(string name, int hp):base(name,hp){}
+	public override int GetDamage(int Damage)
+	{
+		int k=Damage;
+		HP-=k;
+		return k;
+	}
+}
+
+class warrior_in_heavy_armor : warrior
+{
+	public warrior_in_heavy_armor(string name, int hp):base(name,hp){}
+	public override int GetDamage(int Damage)
+	{
+		int k=Damage;
+		HP-=k;
+		return k;
+	}
+}
+
+class Program
+{
+	static int dam() 
+	{
+		Random random=new Random();
+		return random.Next(30);
+	}
+	static void Main(string[] args)
+	{
+		bool flag=true;
+		List <warrior> warriors=new List <warrior>();
+		warriors.Add(new warrior_in_light_armor("Воин1",100));
+		warriors.Add(new warrior_in_light_armor("Воин2",100));
+		while (flag) 
+		{
+			foreach (warrior w in warriors)
+			{
+				Console.WriteLine(w.Name + " получил " + w.GetDamage(dam()) + " урона\n");
+				if (w.HP<=0)
+				{
+					Console.WriteLine("Игрок " + w.Name + " умер\n");
+					flag=false;
+					break;
+				}
+			}
+		}
+	}
+}

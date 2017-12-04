@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+char c;
+int a=0, b=0;
+void A();
+void gc() { cin >> c; }
+
+void S() {
+	if (c == 'a') {
+		a++;
+		gc();		
+		A();
+		}
+	else if (c == 'b') {
+			b++;
+			gc();
+			A();
+			}
+		else
+			throw c;
+	}
+
+void A() {
+	if (c == 'a') {
+		a++;
+		gc();
+		A();
+		}
+	else if (c == 'b') {
+			b++;
+			gc();
+			A();
+			}
+		else {
+			for (int i=0; i<(a+1)/3; i++)
+				cout << 'a';
+			for (int i=0; i<abs(m-n)/2; i++)
+				cout << 'b';
+			}
+	}
+
+int main() {
+	try {
+		gc();
+		S();
+		if (c != '@') 
+			throw c;
+		cout << endl;
+		return 0;
+		}
+	catch (char c) {
+		cout << "Error!" << endl;
+		return 1;
+		}
+	}			

@@ -1,0 +1,6 @@
+ program
+var a:int;
+begin
+	read(a,b);
+	write(a+b);
+end;

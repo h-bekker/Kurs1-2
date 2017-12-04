@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+//namespace HelloWorld {
+	class Program {
+		static void Main(string[] args) {
+			const int months=12;
+			const int salary=1024;
+			int yearsal=months*salary;
+			var varib=months; // переменный, изменяемый тип
+			varib++;
+			string hello="Hello";
+			string s2="World!";
+			double k=Math.Pow(months,2); //Pow возведение в степень из класса Math
+			// Все ф-ии находятся в классе Math, в том числе Sqrt, PI, Cos, Sin, т.д.
+			Console.WriteLine(k);
+			double a=Math.Cos(60*Math.PI/180);
+			Console.WriteLine(a);
+			Console.WriteLine(hello);
+			Console.WriteLine(yearsal);
+			Console.WriteLine(varib);
+			Console.WriteLine(hello+","+s2);
+			}
+		}

@@ -1,0 +1,65 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class my_string {
+		char* s;
+		int size;
+		bool sign;
+		static int numb;
+	public:
+		friend void my_check(my_string &);
+		friend void inform(const my_string &);
+		void strprint() { cout << s << endl; }
+		void strscan();
+		my_string() {s=NULL; size=0; sign=false; numb++;}
+		my_string(const char *str) {size=strlen(str); s=new char[size]; s=strncpy(s,str,size); s[size-1]='\0'; }
+		my_string(const my_string &a) {size=a.size; sign=a.sign; s=new char[size]; s=strncpy(s,a.s,size); s[size-1]='\0'; }
+		~my_string() {delete [ ] s;};
+	};
+
+void my_string:: strscan() {
+	char strk[256];
+	cin >> strk;
+	size=strlen(strk)+1;
+	s=new char[size];
+	s=strncpy(s,strk,size);
+	s[size-1]='\0';
+	}
+
+void my_check(my_string & str) {
+	for (unsigned int i=0; i<strlen(str.s); i++)
+		if (str.s[i]==',') {
+			cout << "Yes" << endl;
+			str.sign=true;
+			return;
+			}
+	cout << "No" << endl;
+	}
+
+void inform(const my_string &a) {
+	cout << "string: " << a.s << endl;
+	cout << "size of string: " << a.size << endl;
+	cout << "sign exist: " << a.sign << endl;
+	}
+
+void inform(const char* str) {
+	cout << strlen(str) << endl;
+	}
+
+void inform(int a, int b) {
+	cout << a-b << endl;
+	}
+
+int my_string::numb=0;
+
+int main() {
+	my_string a,b;
+	a.strscan();
+	a.strprint();
+	my_check(a);
+	inform(a);
+	inform(7,5);
+	//my_string::numb=5;
+	return 0;
+	}

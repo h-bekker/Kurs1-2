@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+class W { 
+public:
+	int * w;
+	void wf (int * wp) { w = wp;}
+};
+
+class X: virtual W { 
+public:
+	int * x;
+	void xf (int * xp) { x = xp; w = xp; }
+};
+
+class Y: virtual W { 
+public:
+	int * y;
+	void yf (int * yp) { y = yp; w = yp; }
+};
+
+
+class Z: X, Y { 
+public:
+	int * z;
+	void zf (int * zp) { z = zp; x = zp; y = zp; }
+};
+
+
+void h () {
+	int hi;
+	W * pw;
+	X * px;
+	Y * py;
+	Z * pz;
+	//pz = dynamic_cast <Z*> (pw);
+	pz = new W;
+	(*pz).w = & hi;
+	pz -> xf ((*pz).X::w);
+}
+
+int main() {
+	h();
+	return 0;
+	}

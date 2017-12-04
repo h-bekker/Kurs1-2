@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int main(void) {
+	int fd1,fd2,pid=getpid();
+	int k=rand() % 1000;
+	fd1=open("fifo1",O_RDWR);
+	fd2=open("fifo2",O_RDWR);
+	while(1) {
+	read(fd2,&pid,sizeof(int));
+	pid++;
+	printf("%d\n",pid);
+	write(fd1,&pid,sizeof(int));
+	}
+	close(fd1);
+	close(fd2);
+	}

@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+
+template <class T>
+class List {
+	public:
+		T key;
+		List* next;
+	public:
+		List() {next=NULL; } 
+		bool empty() { if (*next==NULL) return true; else return false; }; 			
+		void pushfront(List l);
+		void pushback(List l);
+		int numb(const T&);
+		void pop(List l);
+		~List() {delete[] next; }
+	};
+
+template <class T>
+void List <T> :: pushfront (List l) {
+	l->next=next;
+	next=l;
+	}
+
+template <class T>
+void List <T> :: pushback (List l) {
+	List link=*this;
+	while ((link.next)!=NULL) 
+		link=link.next;
+	link.next=l;
+	}
+
+template <class T>
+int List <T> :: numb (const T& elem) {
+	int ans=0;
+	List link=this;
+	while ((link->next)!=NULL) {
+		if (link.key==key)
+			ans++;
+		link=link->next;
+		}
+	return ans;
+	}
+
+template <class T>
+void List <T> :: pop (List l) {
+	List link1=this;
+	List link2=link1->next;
+	while ((link2->next)!=NULL) {
+		if (link2.key==l.key) {
+			link1->next=link2->next;
+			~link2();
+			link2=link1->next;
+			}
+		link1=link1->next;
+		link2=link2->next;
+		}
+	}
+
+
+
+int main() {
+	List <int> l;
+	int k;
+	for (int i=0; i<5; i++) {
+		List <int> t;
+		cin >> k;
+		t.key=k;
+		t.next=NULL;
+		l.pushback(t);
+		}
+	return 0;
+	}
